@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Scholarship Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <div class="header-top">
+                <div class="auth-container" id="authButtons">
+                    <button type="button" class="auth-btn btn-primary" onclick="openModal('loginModal')">Sign In / Join</button>
+                </div>
+                <div class="user-container hide" id="userMenu">
+                    <span id="userNameDisplay">Hello, User</span>
+                    <button type="button" class="auth-btn btn-outline" onclick="logout()">Log Out</button>
+                </div>
+            </div>
+            <h1>AI Scholarship <span>Finder</span></h1>
+            <p>Enter your profile to instantly discover funding tailored to your background.</p>
+        </header>
+
+        <section class="glass-panel profile-section">
+            <form id="profileForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="E.g. Alice Sharma" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="alice@example.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="education_level">Current Education</label>
+                        <select id="education_level" name="education_level" required>
+                            <option value="" disabled selected>Select level...</option>
+                            <option value="School">School (Class 1-12)</option>
+                            <option value="Undergraduate">Undergraduate (B.Tech, BA, B.Sc)</option>
+                            <option value="Postgraduate">Postgraduate (M.Tech, MA, MBA)</option>
+                            <option value="PhD/Research">PhD / Research</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="family_income">Annual Family Income (INR)</label>
+                        <input type="number" id="family_income" name="family_income" placeholder="E.g. 250000" min="0"
+                            required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="" disabled selected>Select category...</option>
+                            <option value="General">General / Unreserved</option>
+                            <option value="OBC">OBC</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                            <option value="EBC">EBC</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="religion">Religion</label>
+                        <select id="religion" name="religion" required>
+                            <option value="" disabled selected>Select religion...</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Muslim">Muslim (Minority)</option>
+                            <option value="Christian">Christian (Minority)</option>
+                            <option value="Sikh">Sikh (Minority)</option>
+                            <option value="Jain">Jain (Minority)</option>
+                            <option value="Buddhist">Buddhist (Minority)</option>
+                            <option value="Parsi">Parsi (Minority)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Gender</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="gender" value="Female" required> Female</label>
+                            <label><input type="radio" name="gender" value="Male" required> Male</label>
+                            <label><input type="radio" name="gender" value="Other" required> Other</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="document-section">
+                    <h3>Document Verification (Optional)</h3>
+                    <p class="subtitle">Upload supporting documents for AI Verification</p>
+                    <div class="input-group">
+                        <label for="document_upload">Certificate/Marksheet (Image)</label>
+                        <input type="file" id="document_upload" accept="image/png, image/jpeg, image/jpg">
+                        <div id="uploadStatus" class="upload-status hide">
+                            <span class="status-icon"></span>
+                            <span class="status-text">Processing...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn">
+                    <span class="btn-text">Find My Matches</span>
+                    <div class="spinner hide" id="loadingSpinner"></div>
+                </button>
+            </form>
+        </section>
+
+        <section class="results-section hide" id="resultsSection">
+            <div class="results-header">
+                <h2>Top Recommendations</h2>
+                <span class="badge" id="matchCount">0 matches found</span>
+            </div>
+            <div class="grid" id="scholarshipsGrid">
+                <!-- Javascript will inject cards here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modals -->
+    <div class="modal hide" id="loginModal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Log In</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="input-group" style="margin-bottom: 1.5rem;">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <p class="error-msg hide" id="loginError"></p>
+                <button type="submit" class="auth-submit">Log In
+                    <div class="spinner hide" id="loginSpinner"></div>
+                </button>
+                <div class="modal-footer">
+                    <span class="modal-toggle-text" onclick="switchModal('loginModal', 'signupModal')">Don't have an account? Sign Up</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal hide" id="signupModal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" name="password" required>
+                </div>
+                <div class="input-group" style="margin-bottom: 1.5rem;">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" name="confirm_password" required>
+                </div>
+                <p class="error-msg hide" id="signupError"></p>
+                <button type="submit" class="auth-submit">Create Account
+                    <div class="spinner hide" id="signupSpinner"></div>
+                </button>
+                <div class="modal-footer">
+                    <span class="modal-toggle-text" onclick="switchModal('signupModal', 'loginModal')">Already have an account? Log In</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+=== Scholarship Recommendation Engine ===
+
+[+] Processing recommendations for: Alice Sharma (alice@example.com)
+    Profile: Undergraduate | Income: 250000.0 | General | Hindu | Female
+    [*] Found 53 strong matches. Top 5:
+        -> [Score: 100.0] Scholarship for BTech Students in India: Eligibility, Amount, Government, Dates,... (ID: 44)
+        -> [Score: 100.0] BTech Scholarship in India by Government, Private Colleges - Know Details... (ID: 46)
+        -> [Score: 100.0] BTech Scholarship In India 2025 - Check application process, eligibility, and ty... (ID: 49)
+        -> [Score: 95.0] Scholarships for Engineering Students in India 2025 – Apply Now... (ID: 17)
+        -> [Score: 95.0] India's Top Scholarships: Your Guide to Funding Education
+– fundaspring... (ID: 18)
+
+[+] Processing recommendations for: Bob Singh (bob@example.com)
+    Profile: Postgraduate | Income: 150000.0 | OBC | Sikh | Male
+    [*] Found 15 strong matches. Top 5:
+        -> [Score: 95.0] 100% Scholarship for B.Tech in India | Eligibility, Entrance Exams, Colleges... (ID: 47)
+        -> [Score: 90.0] Swami Vivekananda Merit-cum-Means Scholarship 2026 - My Tec Books... (ID: 11)
+        -> [Score: 90.0] Scholarships in India: State minority scholarship for students pursuing higher e... (ID: 24)
+        -> [Score: 90.0] Want to Pursue Engineering? Here Are 10 Scholarships To Check Out... (ID: 56)
+        -> [Score: 85.0] Research fellowships in India - Wikipedia... (ID: 57)
+
+[+] Processing recommendations for: Rahul Kumar (rahul@example.com)
+    Profile: School | Income: 80000.0 | SC | Hindu | Male
+    [*] Found 25 strong matches. Top 5:
+        -> [Score: 90.0] The top 10 scholarships for Indian students for study... (ID: 4)
+        -> [Score: 90.0] Swami Vivekananda Merit-cum-Means Scholarship 2026 - My Tec Books... (ID: 11)
+        -> [Score: 90.0] Global Scholarship India | The Global Scholarship... (ID: 12)
+        -> [Score: 90.0] Apply Now For Scholarships in India – UP Sarkari Yojana... (ID: 16)
+        -> [Score: 90.0] Global Scholarship India | The Global Scholarship... (ID: 20)

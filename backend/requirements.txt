@@ -1,0 +1,15 @@
+requests
+beautifulsoup4
+ddgs
+lxml
+fastapi
+uvicorn
+python-multipart
+schedule
+pytesseract
+Pillow==10.3.0
+ddgs
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+pydantic>=2.0.0
+PyJWT>=2.8.0
