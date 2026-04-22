@@ -53,13 +53,17 @@ jobs:
             
             # Start or restart FastAPI Backend
             pm2 delete "fastapi-backend" || true
-            pm2 start "venv/bin/uvicorn" --name "fastapi-backend" -- src.api:app --host 0.0.0.0 --port 8000
+            pm2 start "venv/bin/python" --name "fastapi-backend" -- -m uvicorn src.api:app --host 0.0.0.0 --port 8000
             
             # Start or restart Background Scheduler
             pm2 delete "crawler-scheduler" || true
             pm2 start "venv/bin/python" --name "crawler-scheduler" -- scheduler.py
             
             pm2 save
+            
+            # Grant Nginx permissions to read the home folder static files
+            sudo chmod o+x /home/azureuser
+            sudo chmod -R o+rx /home/azureuser/crawler/frontend/public
             
             # Setup Nginx for Frontend using our provided config
             if ! command -v nginx &> /dev/null; then
