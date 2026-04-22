@@ -3,6 +3,11 @@
 ## 1. Project Overview
 The **Scholarship Discovery & Recommendation System** is a comprehensive platform designed to automate the discovery of scholarships across the web and dynamically match them to students based on their profile. It reduces the manual effort required by students to find and verify their eligibility for financial aid. The system features a modern REST API, an automated web crawler, and an AI-driven document verification and recommendation engine.
 
+
+
+
+
+
 ## 2. Artificial Intelligence (AI) & intelligent Automation
 The core value of this project lies in its intelligent automation and AI components, which solve two major problems in scholarship distribution: **Eligibility Matching** and **Document Verification**.
 

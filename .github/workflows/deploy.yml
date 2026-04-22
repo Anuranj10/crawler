@@ -1,0 +1,73 @@
+name: Deploy to Azure VM (Bare Metal)
+
+on:
+  push:
+    branches:
+      - main
+  # Allows triggering the workflow manually
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy project files to Azure VM securely
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "."
+          target: "~/crawler"
+          rm: true
+
+      - name: Setup Backend and Start Services
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/crawler/backend
+            
+            # Ensure python3-venv is installed (system package)
+            sudo apt-get update && sudo apt-get install -y python3-venv
+            
+            # Setup Virtual Environment and Install Dependencies
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            
+            # We use PM2 to keep the backend running
+            if ! command -v pm2 &> /dev/null; then
+                echo "PM2 is not installed. Installing Node.js and PM2..."
+                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+                sudo apt-get install -y nodejs
+                sudo npm install -g pm2
+            fi
+            
+            # Start or restart FastAPI Backend
+            pm2 delete "fastapi-backend" || true
+            pm2 start "venv/bin/uvicorn" --name "fastapi-backend" -- src.api:app --host 0.0.0.0 --port 8000
+            
+            # Start or restart Background Scheduler
+            pm2 delete "crawler-scheduler" || true
+            pm2 start "venv/bin/python" --name "crawler-scheduler" -- scheduler.py
+            
+            pm2 save
+            
+            # Setup Nginx for Frontend using our provided config
+            if ! command -v nginx &> /dev/null; then
+                echo "Nginx is not installed. Installing Nginx..."
+                sudo apt-get install -y nginx
+            fi
+            
+            sudo cp ~/crawler/frontend/nginx.conf /etc/nginx/sites-available/crawler
+            sudo ln -sf /etc/nginx/sites-available/crawler /etc/nginx/sites-enabled/
+            sudo rm -f /etc/nginx/sites-enabled/default
+            sudo systemctl restart nginx

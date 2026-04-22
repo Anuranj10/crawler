@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: scholarship_frontend_prod
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+  backend:
+    build: ./backend
+    container_name: scholarship_backend_prod
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: always
+
+  scheduler:
+    build: ./backend
+    container_name: scholarship_scheduler_prod
+    command: python scheduler.py
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - backend
+    restart: always
