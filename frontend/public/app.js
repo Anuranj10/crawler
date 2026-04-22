@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // === API Base URL ===
+    // When served via Nginx (Docker), use relative paths. When running locally, point to backend port.
+    const BASE_URL = window.location.protocol === 'file:' || window.location.port === '3000'
+        ? 'http://127.0.0.1:8000'
+        : window.location.port === '8080'
+            ? `http://${window.location.hostname}:8000`
+            : '';
+
     // === Auth Management State ===
     let jwtToken = localStorage.getItem('jwt_token') || null;
     const authButtons = document.getElementById('authButtons');
@@ -28,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchUserProfile() {
         try {
-            const response = await fetch('/api/user/me', {
+            const response = await fetch(`${BASE_URL}/api/user/me`, {
                 headers: { 'Authorization': `Bearer ${jwtToken}` }
             });
             if (response.ok) {
@@ -78,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.classList.add('hide');
 
         try {
-            const res = await fetch('/api/auth/login', {
+            const res = await fetch(`${BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(Object.fromEntries(fd))
@@ -129,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const payload = Object.fromEntries(fd);
             delete payload.confirm_password;
             
-            const res = await fetch('/api/auth/signup', {
+            const res = await fetch(`${BASE_URL}/api/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -177,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append("file", file);
 
         try {
-            const response = await fetch('/upload-document/', {
+            const response = await fetch(`${BASE_URL}/upload-document/`, {
                 method: 'POST',
                 body: formData
             });
@@ -231,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Optional: Save profile if logged in
             if (jwtToken) {
-                fetch('/api/user/profile', {
+                fetch(`${BASE_URL}/api/user/profile`, {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -242,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // 3. Make the API Call to our FastAPI backend
-            const response = await fetch('/recommendations', {
+            const response = await fetch(`${BASE_URL}/recommendations`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
