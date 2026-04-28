@@ -2,18 +2,8 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, SafeAreaView, BackHandler, Platform, ActivityIndicator, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { StatusBar } from 'expo-status-bar';
-import Constants from 'expo-constants';
 
-// Extract development IP directly from the Metro bundler connection
-const debuggerHost = Constants.expoConfig?.hostUri;
-
-// If we're in Dev Mode and connected to Metro, we dynamically form the IP.
-// Otherwise (For Production builds), use this production domain string.
-const PRODUCTION_DOMAIN = 'https://myscholarshipapp.com'; // Change this later
-
-const WEBVIEW_URL = __DEV__ && debuggerHost
-  ? `http://${debuggerHost.split(':')[0]}` // Connects to Port 80
-  : PRODUCTION_DOMAIN;
+const WEBVIEW_URL = 'http://eduro.eastasia.cloudapp.azure.com';
 
 export default function App() {
   const webViewRef = useRef(null);
