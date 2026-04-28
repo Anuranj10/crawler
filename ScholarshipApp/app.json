@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ScholarshipApp",
-    "slug": "ScholarshipApp",
+    "name": "Eduro Scholarships",
+    "slug": "eduro-scholarships",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,17 +13,28 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eduro.scholarships",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.eduro.scholarships"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "02a71b67-6573-40b6-bf0a-884b038d923c"
+      }
+    },
+    "owner": "anuranjs-organization"
   }
 }

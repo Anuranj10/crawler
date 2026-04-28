@@ -1,11 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // === API Base URL ===
-    // When served via Nginx (Docker), use relative paths. When running locally, point to backend port.
-    const BASE_URL = window.location.protocol === 'file:' || window.location.port === '3000'
-        ? 'http://127.0.0.1:8000'
-        : window.location.port === '8080'
-            ? `http://${window.location.hostname}:8000`
-            : '';
+    const BASE_URL = 'http://eduro.eastasia.cloudapp.azure.com';
 
     // === Auth Management State ===
     let jwtToken = localStorage.getItem('jwt_token') || null;

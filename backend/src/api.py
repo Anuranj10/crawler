@@ -11,6 +11,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from src.recommendation import get_recommendations_for_user
 from src.document_processor import process_document
+from src.email_service import send_login_email, send_scholarship_results_email
 DB_NAME = "scholarships.db"
 # Use absolute path resolving locally towards the top folder, or rely on Docker WD
 db_path = DB_NAME if os.path.exists(DB_NAME) else os.path.join("..", DB_NAME)
@@ -130,6 +131,12 @@ def get_recommendations(profile: UserProfile):
         # Call our robust matching logic algorithm
         matches = get_recommendations_for_user(user_data)
         
+        # Send scholarship results via email
+        try:
+            send_scholarship_results_email(profile.name, profile.email, matches)
+        except Exception as e:
+            print(f"Failed to send scholarship results email: {e}")
+        
         return {
             "status": "success",
             "matches": matches
@@ -178,6 +185,12 @@ def login(user: UserLogin):
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode = {"sub": db_user['email'], "exp": expire}
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    
+    # Send login email
+    try:
+        send_login_email(db_user['name'], db_user['email'])
+    except Exception as e:
+        print(f"Failed to send login email: {e}")
     
     return {
         "access_token": encoded_jwt, 
